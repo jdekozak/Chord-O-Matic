@@ -42,7 +42,9 @@ public class ChordSelector extends AppCompatActivity
         initializeKeyAdapter();
         initializeKeyView();
 
-
+        initializeChordCollection();
+        initializeChordAdapter();
+        initializeChordView();
 
         initializeSongChordAdapter();
         initializeSongChordView();
@@ -73,28 +75,13 @@ public class ChordSelector extends AppCompatActivity
     private void initializeKeyView()
     {
         keyView = findViewById(R.id.list_of_keys);
-        keyView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        keyView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 6));
         keyView.setAdapter(keyAdapter);
     }
 
     private void initializeChordCollection()
     {
         chordCollection = new ArrayList<>();
-        chordCollection.add(new Chord("m", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("11", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("m7", new char[]{'x', '2', '2', '0', '1', '0'}, 2));
-        chordCollection.add(new Chord("m9", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("major", new char[]{'5', '7', '7', '5', '6', 'x'}, 5));
-        chordCollection.add(new Chord("dim7", new char[]{'0','2','2','0','0','x'}, 2));
-        chordCollection.add(new Chord("aug9", new char[]{'8','a','8','9','a','8'}, 8));
-        chordCollection.add(new Chord("m9bis", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("majbis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("dim7bis", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("aug9bis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("m9ter", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("majter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("dim7ter", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("aug9ter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
     }
 
     private void initializeChordAdapter()
@@ -169,8 +156,36 @@ public class ChordSelector extends AppCompatActivity
     public void onKeyClick(int position)
     {
         selectedKey = position;
-        initializeChordCollection();
-        initializeChordAdapter();
-        initializeChordView();
+
+        clearChordCollection();
+        loadChordCollection();
+
+        notifyUserOfSuccessfulOperation();
+    }
+
+    private void loadChordCollection()
+    {
+        chordCollection.add(new Chord("m", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("11", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("m7", new char[]{'x', '2', '2', '0', '1', '0'}, 2));
+        chordCollection.add(new Chord("m9", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("major", new char[]{'5', '7', '7', '5', '6', 'x'}, 5));
+        chordCollection.add(new Chord("dim7", new char[]{'0','2','2','0','0','x'}, 2));
+        chordCollection.add(new Chord("aug9", new char[]{'8','a','8','9','a','8'}, 8));
+        chordCollection.add(new Chord("m9bis", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("majbis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("dim7bis", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("aug9bis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("m9ter", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("majter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("dim7ter", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("aug9ter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordAdapter.notifyDataSetChanged();
+    }
+
+    private void clearChordCollection()
+    {
+        chordCollection.clear();
+        chordAdapter.notifyDataSetChanged();
     }
 }
