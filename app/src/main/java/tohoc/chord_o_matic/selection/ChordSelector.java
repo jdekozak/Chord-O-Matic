@@ -1,21 +1,22 @@
 package tohoc.chord_o_matic.selection;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
 import tohoc.chord_o_matic.R;
 
-public class ChordSelector extends AppCompatActivity
+public class ChordSelector extends Fragment
         implements ChordAdapter.OnChordListener,
                    SongChordAdapter.OnSongChordListener,
                    KeyAdapter.OnKeyListener
@@ -32,22 +33,27 @@ public class ChordSelector extends AppCompatActivity
     private RecyclerView songChordView;
     private SongChordAdapter songChordAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public ChordSelector()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chord_selector);
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        View tabChordSelector = inflater.inflate(R.layout.tab_chord_selector, container, false);
         initializeKeyCollection();
         initializeKeyAdapter();
-        initializeKeyView();
+        initializeKeyView(tabChordSelector);
 
         initializeChordCollection();
         initializeChordAdapter();
-        initializeChordView();
+        initializeChordView(tabChordSelector);
 
         initializeSongChordAdapter();
-        initializeSongChordView();
+        initializeSongChordView(tabChordSelector);
+
+        return tabChordSelector;
     }
 
     private void initializeKeyCollection()
@@ -72,10 +78,10 @@ public class ChordSelector extends AppCompatActivity
         keyAdapter = new KeyAdapter(keyCollection, this);
     }
 
-    private void initializeKeyView()
+    private void initializeKeyView(View parent)
     {
-        keyView = findViewById(R.id.list_of_keys);
-        keyView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 6));
+        keyView = parent.findViewById(R.id.list_of_keys);
+        keyView.setLayoutManager(new GridLayoutManager(getContext(), 6));
         keyView.setAdapter(keyAdapter);
     }
 
@@ -89,10 +95,10 @@ public class ChordSelector extends AppCompatActivity
         chordAdapter = new ChordAdapter(chordCollection, this);
     }
 
-    private void initializeChordView()
+    private void initializeChordView(View parent)
     {
-        chordView = findViewById(R.id.list_of_chords);
-        chordView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
+        chordView = parent.findViewById(R.id.list_of_chords);
+        chordView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         chordView.setAdapter(chordAdapter);
     }
 
@@ -101,15 +107,16 @@ public class ChordSelector extends AppCompatActivity
         songChordAdapter = new SongChordAdapter(new ArrayList<SongChord>(), this);
     }
 
-    private void initializeSongChordView()
+    private void initializeSongChordView(View parent)
     {
-        songChordView = findViewById(R.id.list_of_song_chords);
-        songChordView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        songChordView = parent.findViewById(R.id.list_of_song_chords);
+        songChordView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         songChordView.setAdapter(songChordAdapter);
     }
 
     private void notifyUserOfSuccessfulOperation()
     {
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             getVibrator().vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -118,8 +125,9 @@ public class ChordSelector extends AppCompatActivity
         {
             getVibrator().vibrate(100);
         }
+        */
     }
-
+/*
     private Vibrator getVibrator()
     {
         Vibrator vibrator;
@@ -133,7 +141,7 @@ public class ChordSelector extends AppCompatActivity
         }
         return vibrator;
     }
-
+*/
     @Override
     public void onChordClick(int position)
     {
