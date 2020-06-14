@@ -1,6 +1,9 @@
 package tohoc.chord_o_matic.ui.main;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -12,7 +15,7 @@ import tohoc.chord_o_matic.R;
 import tohoc.chord_o_matic.composition.SongComposer;
 import tohoc.chord_o_matic.selection.ChordSelector;
 
-public class SectionsPagerAdapter extends FragmentPagerAdapter
+public class SectionsPagerAdapter extends FragmentPagerAdapter implements ChordSelector.OnChordSelectorListener
 {
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
@@ -30,11 +33,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
         switch(position)
         {
             case 0:
-                return new ChordSelector();
+                return new ChordSelector(this);
             case 1:
                 return new SongComposer();
             default:
-                return new ChordSelector();
+                return new ChordSelector(this);
         }
     }
 
@@ -49,5 +52,33 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter
     public int getCount()
     {
         return TAB_TITLES.length;
+    }
+
+
+    private Vibrator getVibrator()
+    {
+        Vibrator vibrator;
+        try
+        {
+            vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+        }
+        catch (Exception exception)
+        {
+            throw exception;
+        }
+        return vibrator;
+    }
+
+    @Override
+    public void onSuccessfulOperation()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            getVibrator().vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+        }
+        else
+        {
+            getVibrator().vibrate(100);
+        }
     }
 }

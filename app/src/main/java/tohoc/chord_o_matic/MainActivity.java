@@ -2,14 +2,10 @@ package tohoc.chord_o_matic;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
-import android.view.View;
+import com.google.android.material.tabs.TabLayout;
 
 import tohoc.chord_o_matic.ui.main.SectionsPagerAdapter;
 

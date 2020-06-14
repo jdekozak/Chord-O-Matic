@@ -33,8 +33,16 @@ public class ChordSelector extends Fragment
     private RecyclerView songChordView;
     private SongChordAdapter songChordAdapter;
 
-    public ChordSelector()
+    private OnChordSelectorListener chordSelectorListener;
+
+    public interface OnChordSelectorListener
     {
+        void onSuccessfulOperation();
+    }
+
+    public ChordSelector(OnChordSelectorListener chordSelectorListener)
+    {
+        this.chordSelectorListener = chordSelectorListener;
     }
 
     @Nullable
@@ -116,32 +124,9 @@ public class ChordSelector extends Fragment
 
     private void notifyUserOfSuccessfulOperation()
     {
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            getVibrator().vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-        }
-        else
-        {
-            getVibrator().vibrate(100);
-        }
-        */
+        chordSelectorListener.onSuccessfulOperation();
     }
-/*
-    private Vibrator getVibrator()
-    {
-        Vibrator vibrator;
-        try
-        {
-            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        }
-        catch (Exception exception)
-        {
-            throw exception;
-        }
-        return vibrator;
-    }
-*/
+
     @Override
     public void onChordClick(int position)
     {
