@@ -130,7 +130,7 @@ public class ChordSelector extends Fragment
     @Override
     public void onChordClick(int position)
     {
-        SongChord songChord = new SongChord(keyCollection.get(selectedKey).name + chordCollection.get(position).suffix);
+        SongChord songChord = new SongChord(keyCollection.get(selectedKey).name, chordCollection.get(position).suffix);
         if(!songChordAdapter.hasSongChord(songChord))
         {
             songChordAdapter.addSongChord(songChord);

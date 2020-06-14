@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import tohoc.chord_o_matic.R;
-import tohoc.chord_o_matic.selection.Key;
 import tohoc.chord_o_matic.selection.SongChord;
 import tohoc.chord_o_matic.selection.SongChordAdapter;
 
@@ -46,13 +45,13 @@ public class SongComposer extends Fragment
     private void initializeSongChordCollection()
     {
         songChordCollection = new ArrayList<>();
-        songChordCollection.add(new SongChord("Amaj"));
-        songChordCollection.add(new SongChord("Amin"));
-        songChordCollection.add(new SongChord("B7"));
-        songChordCollection.add(new SongChord("C"));
-        songChordCollection.add(new SongChord("F"));
-        songChordCollection.add(new SongChord("Fmaj"));
-        songChordCollection.add(new SongChord("G"));
+        songChordCollection.add(new SongChord("A","maj"));
+        songChordCollection.add(new SongChord("A", "min"));
+        songChordCollection.add(new SongChord("B", "7"));
+        songChordCollection.add(new SongChord("C", ""));
+        songChordCollection.add(new SongChord("F", ""));
+        songChordCollection.add(new SongChord("F","maj"));
+        songChordCollection.add(new SongChord("G", ""));
     }
 
     private void initializeSongChordAdapter()

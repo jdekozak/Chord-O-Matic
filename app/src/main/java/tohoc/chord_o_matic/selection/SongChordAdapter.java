@@ -43,15 +43,18 @@ public class SongChordAdapter extends RecyclerView.Adapter<SongChordAdapter.Song
         SongChordViewHolder(View item)
         {
             super(item);
-            name = item.findViewById(R.id.song_chord_name);
+            key = item.findViewById(R.id.song_chord_key);
+            suffix = item.findViewById(R.id.song_chord_suffix);
         }
 
         void display(SongChord songChord)
         {
-            name.setText(songChord.name);
+            key.setText(songChord.key);
+            suffix.setText(songChord.suffix);
         }
 
-        public TextView name;
+        public TextView key;
+        public TextView suffix;
     }
 
     public SongChordAdapter(List<SongChord> songChordCollection, OnSongChordListener onSongChordListener)
