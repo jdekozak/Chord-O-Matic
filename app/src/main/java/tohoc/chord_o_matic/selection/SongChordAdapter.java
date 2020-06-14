@@ -14,7 +14,7 @@ import tohoc.chord_o_matic.R;
 
 public class SongChordAdapter extends RecyclerView.Adapter<SongChordAdapter.SongChordViewHolder>
 {
-    interface OnSongChordListener
+    public interface OnSongChordListener
     {
         void onSongChordClick(int position);
     }
@@ -54,7 +54,7 @@ public class SongChordAdapter extends RecyclerView.Adapter<SongChordAdapter.Song
         public TextView name;
     }
 
-    SongChordAdapter(List<SongChord> songChordCollection, OnSongChordListener onSongChordListener)
+    public SongChordAdapter(List<SongChord> songChordCollection, OnSongChordListener onSongChordListener)
     {
         this.songChordCollection = songChordCollection;
         this.onSongChordListener = onSongChordListener;
