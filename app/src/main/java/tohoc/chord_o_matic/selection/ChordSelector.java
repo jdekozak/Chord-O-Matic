@@ -1,21 +1,22 @@
 package tohoc.chord_o_matic.selection;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
 import tohoc.chord_o_matic.R;
 
-public class ChordSelector extends AppCompatActivity
+public class ChordSelector extends Fragment
         implements ChordAdapter.OnChordListener,
                    SongChordAdapter.OnSongChordListener,
                    KeyAdapter.OnKeyListener
@@ -32,20 +33,35 @@ public class ChordSelector extends AppCompatActivity
     private RecyclerView songChordView;
     private SongChordAdapter songChordAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chord_selector);
+    private OnChordSelectorListener chordSelectorListener;
 
+    public interface OnChordSelectorListener
+    {
+        void onSuccessfulOperation();
+    }
+
+    public ChordSelector(OnChordSelectorListener chordSelectorListener)
+    {
+        this.chordSelectorListener = chordSelectorListener;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        View tabChordSelector = inflater.inflate(R.layout.tab_chord_selector, container, false);
         initializeKeyCollection();
         initializeKeyAdapter();
-        initializeKeyView();
+        initializeKeyView(tabChordSelector);
 
-
+        initializeChordCollection();
+        initializeChordAdapter();
+        initializeChordView(tabChordSelector);
 
         initializeSongChordAdapter();
-        initializeSongChordView();
+        initializeSongChordView(tabChordSelector);
+
+        return tabChordSelector;
     }
 
     private void initializeKeyCollection()
@@ -70,31 +86,16 @@ public class ChordSelector extends AppCompatActivity
         keyAdapter = new KeyAdapter(keyCollection, this);
     }
 
-    private void initializeKeyView()
+    private void initializeKeyView(View parent)
     {
-        keyView = findViewById(R.id.list_of_keys);
-        keyView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        keyView = parent.findViewById(R.id.list_of_keys);
+        keyView.setLayoutManager(new GridLayoutManager(getContext(), 6));
         keyView.setAdapter(keyAdapter);
     }
 
     private void initializeChordCollection()
     {
         chordCollection = new ArrayList<>();
-        chordCollection.add(new Chord("m", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("11", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("m7", new char[]{'x', '2', '2', '0', '1', '0'}, 2));
-        chordCollection.add(new Chord("m9", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("major", new char[]{'5', '7', '7', '5', '6', 'x'}, 5));
-        chordCollection.add(new Chord("dim7", new char[]{'0','2','2','0','0','x'}, 2));
-        chordCollection.add(new Chord("aug9", new char[]{'8','a','8','9','a','8'}, 8));
-        chordCollection.add(new Chord("m9bis", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("majbis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("dim7bis", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("aug9bis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("m9ter", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("majter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
-        chordCollection.add(new Chord("dim7ter", new char[]{'0','3','2','0','x','x'}, 0));
-        chordCollection.add(new Chord("aug9ter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
     }
 
     private void initializeChordAdapter()
@@ -102,10 +103,10 @@ public class ChordSelector extends AppCompatActivity
         chordAdapter = new ChordAdapter(chordCollection, this);
     }
 
-    private void initializeChordView()
+    private void initializeChordView(View parent)
     {
-        chordView = findViewById(R.id.list_of_chords);
-        chordView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
+        chordView = parent.findViewById(R.id.list_of_chords);
+        chordView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         chordView.setAdapter(chordAdapter);
     }
 
@@ -114,37 +115,16 @@ public class ChordSelector extends AppCompatActivity
         songChordAdapter = new SongChordAdapter(new ArrayList<SongChord>(), this);
     }
 
-    private void initializeSongChordView()
+    private void initializeSongChordView(View parent)
     {
-        songChordView = findViewById(R.id.list_of_song_chords);
-        songChordView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        songChordView = parent.findViewById(R.id.list_of_song_chords);
+        songChordView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         songChordView.setAdapter(songChordAdapter);
     }
 
     private void notifyUserOfSuccessfulOperation()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            getVibrator().vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-        }
-        else
-        {
-            getVibrator().vibrate(100);
-        }
-    }
-
-    private Vibrator getVibrator()
-    {
-        Vibrator vibrator;
-        try
-        {
-            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        }
-        catch (Exception exception)
-        {
-            throw exception;
-        }
-        return vibrator;
+        chordSelectorListener.onSuccessfulOperation();
     }
 
     @Override
@@ -169,8 +149,36 @@ public class ChordSelector extends AppCompatActivity
     public void onKeyClick(int position)
     {
         selectedKey = position;
-        initializeChordCollection();
-        initializeChordAdapter();
-        initializeChordView();
+
+        clearChordCollection();
+        loadChordCollection();
+
+        notifyUserOfSuccessfulOperation();
+    }
+
+    private void loadChordCollection()
+    {
+        chordCollection.add(new Chord("m", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("11", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("m7", new char[]{'x', '2', '2', '0', '1', '0'}, 2));
+        chordCollection.add(new Chord("m9", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("major", new char[]{'5', '7', '7', '5', '6', 'x'}, 5));
+        chordCollection.add(new Chord("dim7", new char[]{'0','2','2','0','0','x'}, 2));
+        chordCollection.add(new Chord("aug9", new char[]{'8','a','8','9','a','8'}, 8));
+        chordCollection.add(new Chord("m9bis", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("majbis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("dim7bis", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("aug9bis", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("m9ter", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("majter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordCollection.add(new Chord("dim7ter", new char[]{'0','3','2','0','x','x'}, 0));
+        chordCollection.add(new Chord("aug9ter", new char[]{'x', '3', '2', '0', '1', '0'}, 0));
+        chordAdapter.notifyDataSetChanged();
+    }
+
+    private void clearChordCollection()
+    {
+        chordCollection.clear();
+        chordAdapter.notifyDataSetChanged();
     }
 }
