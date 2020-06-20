@@ -13,12 +13,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import tohoc.chord_o_matic.R;
 import tohoc.chord_o_matic.composition.SongComposer;
+import tohoc.chord_o_matic.playback.SongPlayer;
 import tohoc.chord_o_matic.selection.ChordSelector;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter implements ChordSelector.OnChordSelectorListener
 {
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm)
@@ -36,6 +37,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements ChordS
                 return new ChordSelector(this);
             case 1:
                 return new SongComposer();
+            case 2:
+                return new SongPlayer();
             default:
                 return new ChordSelector(this);
         }
