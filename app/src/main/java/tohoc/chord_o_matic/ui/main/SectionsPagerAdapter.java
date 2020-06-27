@@ -38,7 +38,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements ChordS
             case 1:
                 return new SongComposer();
             case 2:
-                return new SongPlayer();
+                return new SongPlayer(mContext);
             default:
                 return new ChordSelector(this);
         }
