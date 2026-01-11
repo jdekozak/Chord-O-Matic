@@ -2,9 +2,10 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { ChordDefinition, Song, SongEvent, ChordLibrary, SongSection } from '../types';
 import ChordDiagram from './ChordDiagram';
-import { Plus, Trash2, Music, Search, Filter, Layers, Type, ChevronDown, Save, Upload, Repeat, PanelLeft, Pause, Ban, FileAudio } from 'lucide-react';
+import { Plus, Trash2, Music, Search, Filter, Layers, Type, ChevronDown, Save, Upload, Repeat, PanelLeft, Pause, Ban, FileAudio, FileText } from 'lucide-react';
 import { audioEngine } from '../services/AudioEngine';
 import { exportSongToMidi } from '../services/MidiExporter';
+import { exportSongToPdf } from '../services/PdfExporter';
 
 interface EditorTabProps {
   song: Song;
@@ -169,6 +170,10 @@ const EditorTab: React.FC<EditorTabProps> = ({ song, setSong, chordLibrary }) =>
     exportSongToMidi(song);
   };
 
+  const handlePdfExport = () => {
+    exportSongToPdf(song);
+  };
+
   const handleLoadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -320,6 +325,13 @@ const EditorTab: React.FC<EditorTabProps> = ({ song, setSong, chordLibrary }) =>
           </div>
           
           <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+            <button
+              onClick={handlePdfExport}
+              className="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-pink-400 hover:text-pink-200 rounded-lg text-xs font-bold border border-slate-700 transition-all"
+              title="Export PDF"
+            >
+              <FileText size={16} /> <span className="hidden sm:inline">PDF</span>
+            </button>
             <button
               onClick={handleMidiExport}
               className="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 hover:text-amber-200 rounded-lg text-xs font-bold border border-slate-700 transition-all"
