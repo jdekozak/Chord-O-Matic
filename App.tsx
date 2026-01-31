@@ -31,39 +31,39 @@ const App: React.FC = () => {
   return (
     <div className="flex flex-col h-screen bg-slate-950 text-slate-200">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 bg-slate-900 border-b border-slate-800 shadow-xl z-20">
-        <div className="flex items-center gap-3">
-          <div className="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-900/20">
-            <Music2 className="text-white" size={24} />
+      <header className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-slate-900 border-b border-slate-800 shadow-xl z-20 gap-4 sm:gap-0">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="bg-blue-600 p-1.5 sm:p-2 rounded-xl shadow-lg shadow-blue-900/20">
+            <Music2 className="text-white" size={20} />
           </div>
           <div>
-            <h1 className="text-xl font-black tracking-tight text-white">CHORD-O-MATIC</h1>
-            <p className="text-[10px] uppercase tracking-widest text-blue-400 font-bold">Rock Engine</p>
+            <h1 className="text-lg sm:text-xl font-black tracking-tight text-white leading-none">CHORD-O-MATIC</h1>
+            <p className="text-[8px] sm:text-[10px] uppercase tracking-widest text-blue-400 font-bold">Rock Engine</p>
           </div>
         </div>
 
-        <nav className="flex bg-slate-800 p-1 rounded-xl shadow-inner border border-slate-700/50">
+        <nav className="flex bg-slate-800 p-1 rounded-xl shadow-inner border border-slate-700/50 w-full sm:w-auto">
           <button
             onClick={() => setActiveTab(Tab.Editor)}
-            className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 sm:px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
               activeTab === Tab.Editor 
                 ? 'bg-blue-600 text-white shadow-lg' 
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
             }`}
           >
             <Edit3 size={18} />
-            Editor
+            <span className="hidden xs:inline">Editor</span>
           </button>
           <button
             onClick={() => setActiveTab(Tab.Player)}
-            className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 sm:px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
               activeTab === Tab.Player 
                 ? 'bg-blue-600 text-white shadow-lg' 
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
             }`}
           >
             <Play size={18} />
-            Player
+            <span className="hidden xs:inline">Player</span>
           </button>
         </nav>
       </header>
@@ -80,14 +80,14 @@ const App: React.FC = () => {
       </main>
 
       {/* Status Bar */}
-      <footer className="px-6 py-2 bg-slate-900 border-t border-slate-800 text-[10px] text-slate-500 flex justify-between items-center z-20">
-        <div className="flex gap-4">
+      <footer className="px-4 sm:px-6 py-2 bg-slate-900 border-t border-slate-800 text-[9px] sm:text-[10px] text-slate-500 flex justify-between items-center z-20">
+        <div className="flex gap-3 sm:gap-4">
           <span>{totalBeats} BEATS</span>
-          <span>•</span>
-          <span>{Math.floor(totalSeconds / 60)}:{(totalSeconds % 60).toString().padStart(2, '0')} DURATION</span>
+          <span className="hidden xs:inline">•</span>
+          <span className="hidden xs:inline">{Math.floor(totalSeconds / 60)}:{(totalSeconds % 60).toString().padStart(2, '0')} DURATION</span>
         </div>
         <div>
-          <span>READY</span>
+          <span className="font-bold tracking-widest">READY</span>
         </div>
       </footer>
     </div>
